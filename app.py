@@ -6,6 +6,9 @@ import pandas as pd
 from datetime import date
 
 # Google Sheets 認証（Secretsから読み込む）
+scope = ["https://spreadsheets.google.com/feeds",
+         "https://www.googleapis.com/auth/drive"]
+
 creds_dict = st.secrets["gcp_service_account"]
 credentials = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
 client = gspread.authorize(credentials)
@@ -37,4 +40,5 @@ st.subheader("📊 過去のエントリー")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
 
