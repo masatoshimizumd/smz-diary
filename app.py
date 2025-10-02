@@ -5,10 +5,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from datetime import date
 
-# Google Sheets 認証設定
-scope = ["https://spreadsheets.google.com/feeds",
-         "https://www.googleapis.com/auth/drive"]
-credentials = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+# Google Sheets 認証（Secretsから読み込む）
+creds_dict = st.secrets["gcp_service_account"]
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
 client = gspread.authorize(credentials)
 
 # Google Sheetsを開く
@@ -38,3 +37,4 @@ st.subheader("📊 過去のエントリー")
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.dataframe(df)
+
